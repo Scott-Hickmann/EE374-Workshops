@@ -6,10 +6,22 @@ const HOST = '0.0.0.0';
 const server = net.createServer((socket) => {
   const address = `${socket.remoteAddress}:${socket.remotePort}`;
   console.log(`Client ${address} discovered`);
-  socket.write('Hello client, I am the server.');
+  socket.write(
+    `Hello client, I am the server.\nHey client, here's a second message.\n`
+  );
+  socket.write(`And client, here's a third incomplete message `);
+  socket.write(`which is now complete.\n`);
 
+  let buffer = '';
   socket.on('data', (data) => {
-    console.log(`Received from client ${address}: ${data}`);
+    buffer += data;
+    const messages = buffer.split('\n');
+    if (messages.length > 1) {
+      for (const message of messages.slice(0, -1)) {
+        console.log(`Received from client ${address}: ${message}`);
+      }
+      buffer = messages[messages.length - 1];
+    }
   });
 
   socket.on('error', (error) => {
