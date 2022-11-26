@@ -3,14 +3,13 @@ import net from 'net';
 const PORT = 18018;
 const HOST = '0.0.0.0';
 
-const server = net.createServer((socket) => {
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const server = net.createServer(async (socket) => {
   const address = `${socket.remoteAddress}:${socket.remotePort}`;
   console.log(`Client ${address} discovered`);
-  socket.write(
-    `Hello client, I am the server.\nHey client, here's a second message.\n`
-  );
-  socket.write(`And client, here's a third incomplete message `);
-  socket.write(`which is now complete.\n`);
 
   let buffer = '';
   socket.on('data', (data) => {
@@ -31,6 +30,13 @@ const server = net.createServer((socket) => {
   socket.on('close', () => {
     console.error(`Connection to client ${address} closed`);
   });
+
+  socket.write(
+    `Hello client, I am the server.\nHey client, here's a second message.\n`
+  );
+  socket.write(`And client, here's a third incomplete message `);
+  await delay(1000);
+  socket.write(`which is now complete.\n`);
 });
 
 server.listen(PORT, HOST);

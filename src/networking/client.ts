@@ -3,13 +3,18 @@ import net from 'net';
 const SERVER_PORT = 18018;
 const SERVER_HOST = '0.0.0.0';
 
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 const client = new net.Socket();
-client.connect(SERVER_PORT, SERVER_HOST, () => {
+client.connect(SERVER_PORT, SERVER_HOST, async () => {
   console.log(`Connected to server ${SERVER_HOST}:${SERVER_PORT}`);
   client.write(
     `Hello server, I am the client.\nHey server, here's a second message.\n`
   );
   client.write(`And server, here's a third incomplete message `);
+  await delay(1000);
   client.write(`which is now complete.\n`);
 });
 
