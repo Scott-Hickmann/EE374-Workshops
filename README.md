@@ -2,7 +2,9 @@
 
 Workshops code for EE374.
 
-## Development
+## Installation
+
+On VSCode, install the ESLint and Prettier extensions.
 
 Install packages:
 
