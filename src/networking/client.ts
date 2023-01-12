@@ -31,9 +31,9 @@ client.on('data', (data) => {
 });
 
 client.on('error', (error) => {
-  console.log(`Error from server: ${error}`);
+  console.error(`Error from server: ${error}`);
 });
 
 client.on('close', () => {
-  console.log('Connection to server closed');
+  console.error('Connection to server closed');
 });
